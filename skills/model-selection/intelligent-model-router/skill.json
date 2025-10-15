@@ -1,0 +1,80 @@
+{
+  "name": "intelligent-model-router",
+  "version": "1.0.0",
+  "description": "Automatically routes tasks to optimal Claude model (Opus vs Sonnet) based on complexity, scope, and token budget",
+  "author": "GoalKyper Team",
+  "created": "2025-10-14",
+  "triggers": ["before_request"],
+  "priority": 1,
+  "dependencies": ["token-aware-testing", "auto-testing-workflow"],
+  "config": {
+    "opus_token_threshold": 50000,
+    "sonnet_token_threshold": 50000,
+    "confidence_threshold": 0.6,
+    "auto_proceed_delay": 3,
+    "auto_switch_enabled": false,
+    "verbose_mode": true,
+    "opus_keywords": [
+      "design",
+      "architecture",
+      "plan",
+      "review",
+      "analyze",
+      "debug complex",
+      "refactor large",
+      "qcheck",
+      "qcheckf",
+      "qcheckt",
+      "security",
+      "performance bottleneck",
+      "race condition",
+      "database schema",
+      "system design",
+      "technical specification"
+    ],
+    "sonnet_keywords": [
+      "implement",
+      "fix bug",
+      "test",
+      "commit",
+      "deploy",
+      "run",
+      "write",
+      "add",
+      "update",
+      "qcode",
+      "qgit",
+      "qux",
+      "qnew",
+      "build",
+      "compile",
+      "lint",
+      "format",
+      "style"
+    ],
+    "file_impact_threshold": 5,
+    "database_keywords": [
+      "migration",
+      "schema",
+      "alter table",
+      "drop table",
+      "create table",
+      "database safety"
+    ],
+    "shortcuts": {
+      "opus": ["qcheck", "qcheckf", "qcheckt", "qplan"],
+      "sonnet": ["qcode", "qgit", "qux", "qnew"]
+    }
+  },
+  "metrics": {
+    "track_accuracy": true,
+    "log_overrides": true,
+    "measure_token_efficiency": true
+  },
+  "rollout_phase": "phase_1_recommendation_only",
+  "notes": [
+    "Phase 1: Recommendation only (no auto-switching)",
+    "Phase 2: Opt-in auto-switching with 3s delay",
+    "Phase 3: Full automation with silent mode"
+  ]
+}
